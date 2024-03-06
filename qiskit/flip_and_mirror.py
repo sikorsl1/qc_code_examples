@@ -1,7 +1,6 @@
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
+from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit.circuit.library import ZGate
 from qiskit_aer import AerSimulator
-from qiskit.visualization import plot_histogram
 
 import matplotlib.pyplot as plt
 
@@ -64,8 +63,7 @@ def main():
 
         num_shots = 100
         sim = AerSimulator()
-        compiled_qc = transpile(qc, sim)
-        result = sim.run(compiled_qc, shots=num_shots).result()
+        result = sim.run(qc.decompose(), shots=num_shots).result()
         statistics = result.get_counts()
         
         print(f'Results: {statistics}')

@@ -1,4 +1,4 @@
-from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
+from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit.quantum_info import random_unitary
 from qiskit_aer import AerSimulator
 from qiskit.result import marginal_counts
@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def circuit_factory(simulator):
+def circuit_factory():
     q_code = QuantumRegister(9, 'q_code')
     q_rand = QuantumRegister(4, 'q_rand')
     c_rand = ClassicalRegister(4, 'c_rand')
@@ -82,9 +82,7 @@ def circuit_factory(simulator):
     # measure the result
     qc.measure([q_code[0]], [c_result[0]])
 
-    compiled_circuit = transpile(qc, simulator)
-
-    return compiled_circuit, qc
+    return qc
 
 
 
@@ -92,16 +90,15 @@ def main():
 
     sim_runs = 5000
     simulator = AerSimulator()
-    compiled_circuit, circuit = circuit_factory(simulator)
-    # print(circuit)
-    circuit.draw(output='mpl')
-    plt.show()
+    circuit = circuit_factory(simulator)
+    # circuit.draw(output='mpl')
+    # plt.show()
 
-    job = simulator.run(compiled_circuit, shots=sim_runs)
+    job = simulator.run(circuit, shots=sim_runs)
 
     result = job.result()
     marginal_counts(result, [4], inplace=True)
-    counts = result.get_counts(compiled_circuit)
+    counts = result.get_counts(circuit)
     print(f'Experimental - |0> : {counts.get("0")/sim_runs}, |1>: {counts.get("1")/sim_runs}.')
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
 from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister, transpile
 from qiskit.quantum_info import Statevector
 from qiskit_aer import AerSimulator
-from qiskit.circuit.library import XGate
 
 import matplotlib.pyplot as plt
 from addition import addition_circuit
@@ -53,8 +52,8 @@ def main():
     simulator = AerSimulator()
     qc = transpile(qc, simulator)
 
-    qc.draw(output='mpl')
-    plt.show()
+    # qc.draw(output='mpl')
+    # plt.show()
 
     num_shots = 100
     result = simulator.run(qc, shots=num_shots).result()
