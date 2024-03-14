@@ -2,6 +2,7 @@ from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
 from qiskit.quantum_info import Statevector
 from qiskit_aer import AerSimulator
 from qiskit.circuit.library import XGate
+from qiskit.primitives import BackendSampler
 
 import matplotlib.pyplot as plt
 
@@ -44,13 +45,12 @@ def main():
     qc.barrier()
     qc.measure(q_a, c_reg)
 
-    qc.draw(output='mpl')
-    plt.show()
-
-    num_shots = 100
-    result = AerSimulator().run(qc, shots=num_shots).result()
-    statistics = result.get_counts()
-    print(f'Addition result: {statistics}')
+    # qc.draw(output='mpl')
+    # plt.show()
+    
+    sampler = BackendSampler(AerSimulator())
+    job = sampler.run(qc)
+    print(job.result())
 
 if __name__ == "__main__":
     main()
